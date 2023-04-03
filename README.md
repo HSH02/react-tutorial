@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+  ## React 모르는 부분 요약
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. this.state는 this.setState()를 통해 업데이트 할 수 있는 컴포넌트의 상태를 나타낸다.
 
-## Available Scripts
+2. ```
+   const { characters } = this.state
+   ``` 
+   에서 { }의 의미는 
+   ```
+   const characters = this.state.characters   
+   ```
+   를 축약하기 위해 {}를 사용한다. {}을 세부적으로 설명하자면 개체에서 값을 추출하고더 짧은 이름을 가진 변수에 할당할 수 있는 구조 분해 할당이다.
+    ```
+    const { characterData , removeCharacter} = props;
+    ``` 
+    위 코드는 아래 코드와 같다
+    
+    ```
+    const characterData = props.characterData ; 
+    const removeCharacter = props.removeCharacter; 
+    ```
 
-In the project directory, you can run:
+3.
+    ```
+    this.setState({
+     characters: characters.filter((character, i )=> {
+      return i !== index
+    }),
+    ```     
+     에서  ```characters: character```는 배열을 key로 돌려 주어진 인덱스에서 항목을 제거하여 문자 배열을 필터링하고 새 배을 반환하는 코드이다. 
+     
+4.
+    ```
+    this.setState({ characters: [...this.state.characters, character] })
+    ```
+    는 스프레드 연산자 ...을 통해 기존 character 배열의 복사본을 만든다음, character를 넣어 생성한다.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+5.  this.state는 현재 컴포넌트의 state를 참조하고 this.props는 부모의 컴포넌트에서 전달받은 속성를 참조한다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+6.
+    화살표 함수를 사용하는 이유는 이벤트 핸들러가 컴포넌트 인스턴스에 자동으로 바인딩 되기 때문이다. 
+    하지만 만약 일반 함수를 사용할 경우 수동으로 bind()를 통해 바인딩 해야한다. 
+    ```
+    handleSubmit = (character) => {
+      this.setState({ characters: [...this.state.characters, character] })
+    }
+    ```
+    위 코드를 일반 함수로 나타 내면 아래와 같다
+    ```
+    function handleSubmit(character) {
+      this.setState({ characters: [...this.state.characters, character] })
+    }
+    
+    this.handleSubmit = handleSubmit.bind(this);
+    ```
+    즉 화살표 함수는 코드의 간결함과 수동 바인딩을 하지 않기 위해 주로 사용한다.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+7.
+    React에서는 클래스 컴포넌트를 정의할 때 자식 클래스의 생성자에서 super(props)를 사용하여 부모 클래스의 생성자를 호출해야 한다.
+    이는 자식 구성 요소가 부모 클래스의 동작과 속성을 상속하고 부모 클래스가 자식 구성 요소를 초기화하기 전에 몇 가지 설정을 수행해야 할 수 있기 때문에 필요하다.
